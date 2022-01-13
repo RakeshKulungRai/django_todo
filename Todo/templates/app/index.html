@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container w-50 bg-primary text-white">
+     <h1>THis is to do app</h1>
+</div>
+<form class="container w-50 bg-dark text-white" action ="{% url 'add' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+<div class="container w-50 bg-dark text-white">
+<a  href="{% url 'deleteall' %}" >Delete all</a>
+</div>
+
+{% for todo in todos %}
+{% if not todo.completed %}
+<div class="container w-50 bg-dark text-white">
+<li>{{ todo.text }} {{ todo.date }} {{ todo.time }}</li>
+    <a href="{% url 'completed' todo.id %}" >Mark as Completed</a>
+        <a class="text-decoration-none"
+ href="{% url 'delete' todo.id %}" >Delete</a>
+</div>
+{% else %}
+<div class="container w-50 bg-success">
+<li>{{ todo.text }} {{ todo.date  }} {{ todo.time }} </li>
+          <a class="text-decoration-none"
+href="{% url 'notcomplete' todo.id %}" >Mark as Not Completed</a>
+    <a class="text-decoration-none"
+href="{% url 'delete' todo.id %}" >Delete</a>
+</div>
+{% endif %}
+{% empty %}
+<div class="container w-50 bg-success">
+<h3>NO todos to show</h3>
+</div>
+
+{% endfor %}
+</body>
+</html>
